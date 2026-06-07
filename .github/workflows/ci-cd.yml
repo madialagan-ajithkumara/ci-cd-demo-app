@@ -3,7 +3,6 @@ name: CI-CD Pipeline
 on:
   push:
     branches: ["main"]
-  push:
     tags:
       - "v*.*.*"
 
@@ -38,7 +37,7 @@ jobs:
       - name: Build App
         run: npm run build
 
-      # 7. Get Version (from Git Tag OR fallback)
+      # 7. Set Version (Git Tag OR Dev SHA)
       - name: Set Version
         run: |
           if [[ $GITHUB_REF == refs/tags/* ]]; then
