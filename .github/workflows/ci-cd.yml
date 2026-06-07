@@ -1,0 +1,40 @@
+name: CI-CD Pipeline
+
+on:
+  push:
+    branches: ["main"]
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout code
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # 2. Setup Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      # 3. Install dependencies
+      - name: Install Dependencies
+        run: npm install
+
+      # 4. Lint
+      - name: Run Lint
+        run: npm run lint
+
+      # 5. Test
+      - name: Run Tests
+        run: npm test
+
+      # 6. Build
+      - name: Build App
+        run: npm run build
+
+      # 7. Success
+      - name: Done
+        run: echo "CI/CD Pipeline Completed 🚀"

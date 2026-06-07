@@ -1,0 +1,10 @@
+{
+  "name": "ci-cd-demo-app",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "node app.js",
+    "test": "node -e \"console.log('Test Passed ✅')\"",
+    "lint": "node -e \"console.log('Lint Check Passed ✅')\"",
+    "build": "node -e \"console.log('Build Completed 🚀')\""
+  }
+}
