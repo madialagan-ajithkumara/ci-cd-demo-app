@@ -11,33 +11,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout code
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      # 2. Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 18
 
-      # 3. Install dependencies
       - name: Install Dependencies
         run: npm install
 
-      # 4. Lint
       - name: Run Lint
         run: npm run lint
 
-      # 5. Test
       - name: Run Tests
         run: npm test
 
-      # 6. Build App
       - name: Build App
         run: npm run build
 
-      # 7. Set Version (Git Tag OR Dev SHA)
       - name: Set Version
         run: |
           if [[ $GITHUB_REF == refs/tags/* ]]; then
@@ -49,23 +42,19 @@ jobs:
           echo "VERSION=$VERSION" >> $GITHUB_ENV
           echo "Building version: $VERSION"
 
-      # 8. Login to Docker Hub
       - name: Login to Docker Hub
         run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
-      # 9. Build Docker Image
       - name: Build Docker Image
         run: |
           docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo-app:${VERSION} .
           docker tag ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo-app:${VERSION} \
                      ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo-app:latest
 
-      # 10. Push Docker Image
       - name: Push Docker Image
         run: |
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo-app:${VERSION}
           docker push ${{ secrets.DOCKERHUB_USERNAME }}/ci-cd-demo-app:latest
 
-      # 11. Done
       - name: Done
         run: echo "CI/CD Pipeline Completed 🚀 Version: $VERSION"
